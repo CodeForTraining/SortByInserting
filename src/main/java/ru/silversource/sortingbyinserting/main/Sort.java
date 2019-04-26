@@ -1,5 +1,8 @@
 package ru.silversource.sortingbyinserting.main;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,6 +16,8 @@ public class Sort {
     String contentType;
     String sortMode;
     List<File> files;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Sorter.class);
 
     public Sort(String path, String prefix, String contentType, String sortMode) {
         this.path = path;
@@ -31,10 +36,12 @@ public class Sort {
     }
 
     public String start() {
+        LOGGER.debug("Start sorting method start()!");
         File folder = new File(path);
         files = Arrays.asList(folder.listFiles());
         for(File file: files){
-            Sorter sorter = new Sorter(file);
+            Sorter sorter = new Sorter(file, prefix, sortMode, contentType);
+            LOGGER.debug("Command start sort: ", file.getPath());
             sorter.start();
         }
         return "Complete!";

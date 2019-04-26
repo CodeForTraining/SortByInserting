@@ -1,9 +1,13 @@
 package ru.silversource.sortingbyinserting.main;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.silversource.sortingbyinserting.exceptions.SortException;
 
 public class Main {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Sorter.class);
 
     String path;
     String prefix;
@@ -22,6 +26,7 @@ public class Main {
         }catch (ArrayIndexOutOfBoundsException e){
             System.out.println("Enter all arguments!");
         }
+        LOGGER.debug("Start sorting!");
         System.out.println(sort.start());
     }
 }
