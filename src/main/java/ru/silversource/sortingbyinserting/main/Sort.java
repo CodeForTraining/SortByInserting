@@ -37,6 +37,8 @@ public class Sort {
 
     public String start() {
         LOGGER.debug("Start sorting method start()!");
+        File out_folder = new File("C:/out_dir/");
+        out_folder.mkdir();
         File folder = new File(path);
         files = Arrays.asList(folder.listFiles());
         for(File file: files){

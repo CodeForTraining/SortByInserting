@@ -2,12 +2,11 @@ package ru.silversource.sortingbyinserting.main;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.silversource.sortingbyinserting.exceptions.SortException;
+import ru.silversource.sortingbyinserting.sort_methods.InsertionSort;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Sorter extends Thread {
@@ -33,44 +32,38 @@ public class Sorter extends Thread {
         sort();
     }
 
-    private void sort() {
-        sortArray(getArray());
-    }
-
-    private void sortArray(Set array){
-        LOGGER.debug("Sort array", array);
-    }
-
-    /*private Set getArrayStrings(){
+    private void sort(){
         LOGGER.debug("Sorting file sort(): {}", file.getPath());
-        Set linesArray = null;
-        try(BufferedReader reader = new BufferedReader(new FileReader(file))){
-            linesArray = reader.lines().collect(Collectors.toSet());
-        }catch (IOException e){
-            System.out.println("Not file");
-            LOGGER.info("Can't sort file: {}", file.getPath());
-        }
-        return linesArray;
-    }*/
+        List<String> list = null;
+        File fileOut = new File("C:/out_dir/" + prefix + file.getName());
+        try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            list = reader.lines().collect(Collectors.toList());
 
-    private Set getArray(){
-        LOGGER.debug("Sorting file sort(): {}", file.getPath());
-        Set linesArray = null;
-        try(BufferedReader reader = new BufferedReader(new FileReader(file))){
-            for(String line: reader.lines().collect(Collectors.toSet())){
-                if(type.equals("i")){
-                    linesArray.add(Integer.parseInt(line.trim()));
-                    LOGGER.debug("Array is numeric");
-                }else {
-                    linesArray.add(line.trim());
-                    LOGGER.debug("Array is numeric");
-                }
+            if(type.equals("s")) {
+                //strings = InsertionSort.sortString(strings);
+                list = InsertionSort.sortListString(list);
+            }else {
+                list = InsertionSort.sortListInt(list);
             }
+
+            LOGGER.debug("Array is string: {}", list);
+
+        } catch (FileNotFoundException ex) {
+            LOGGER.debug("File not found: {}", file.getPath());
         }catch (IOException e){
-            LOGGER.info("Can't read file: {}", file.getPath());
-        }catch (NumberFormatException e){
-            LOGGER.info("This file \"{}\" may not be sorted as the digital!!!", file);
+            LOGGER.debug("Can't read file: {}", file.getPath());
+        } catch (SortException e) {
+            LOGGER.info("File not sorting as digital: {}", file.getPath());
         }
-        return linesArray;
+        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileOut))){
+            for(String line: list) {
+                bufferedWriter.write(line);
+                bufferedWriter.newLine();
+            }
+        }catch (FileNotFoundException ex) {
+            LOGGER.debug("File not found: {}", fileOut.getPath());
+        }catch (IOException e) {
+            LOGGER.debug("Can't write file: {}", fileOut.getPath());
+        }
     }
 }
