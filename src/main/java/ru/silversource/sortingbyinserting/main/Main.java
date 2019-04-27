@@ -16,15 +16,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-        GetOpt opt = new GetOpt(args);
+
         Sort sort = null;
         try {
+            GetOpt opt = new GetOpt(args);
             sort = new Sort(opt.getPath(), opt.getPrefix(), opt.getContentType(), opt.getSortMode());
         }catch (SortException e){
             System.out.println(e.getErrorCode().getErrorString());//else help info
             return;
-        }catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Enter all arguments!");
         }
         LOGGER.debug("Start sorting!");
         System.out.println(sort.start());

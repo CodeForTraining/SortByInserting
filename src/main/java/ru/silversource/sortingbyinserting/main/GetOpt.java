@@ -1,74 +1,69 @@
 package ru.silversource.sortingbyinserting.main;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.silversource.sortingbyinserting.exceptions.ErrorCode;
 import ru.silversource.sortingbyinserting.exceptions.SortException;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 public class GetOpt {
 
-    String[] args;
+    //private String[] args;
+    private Map<String, String> argsMap;
 
-    public GetOpt(String[] args) {
-        this.args = args;
+    private static final Logger LOGGER = LoggerFactory.getLogger(Sorter.class);
+
+    public GetOpt(String[] args) throws SortException {
+            createMapArgs(args);
     }
 
-    public String getPath() {
-        String path = args[0];
-        return path;
+    private void createMapArgs(String[] args) throws SortException {
+        argsMap = new HashMap<>();
+        for (String arg : args){
+            if(arg.startsWith("--")){
+                String[] pair = arg.split("=");
+                argsMap.put(pair[0].replaceFirst("--", ""), pair[1]);
+            }else if(Pattern.matches("^[a-zA-Z]:\\\\[a-z-]+\\\\", arg)) {
+                argsMap.put("path", arg);
+            }else{
+                throw new SortException(ErrorCode.MISSING_PATH_ARGUMENT);
+            }
+        }
+    }
+
+    public String getPath() throws SortException {
+
+        return argsMap.get("path");
     }
 
     public String getPrefix() throws SortException {
-        String prefix;
-        try {
-            prefix = args[1];
-        }catch (ArrayIndexOutOfBoundsException e){
-            throw new SortException(ErrorCode.MISSING_PREFIX);
+        String prefix = argsMap.get("out-prefix");
+        if(prefix == null){
+            return "default_";
         }
-        if(prefix.startsWith("--out-prefix")) {
-            return prefix.replace("--out-prefix=", "");
-        }else{
-            throw new SortException(ErrorCode.ILLEGAL_ARGUMENT);
-        }
+        return prefix;
     }
 
     public String getContentType() throws SortException{
-        String type = null;
-        try {
-            type = args[2];
-        }catch (ArrayIndexOutOfBoundsException e){
-            return type;
+        String type = argsMap.get("content-type");
+        if(type == null) {
+            return "s";
         }
-        if(type.startsWith("--content-type")) {
-            return type.replace("--content-type=", "");
-        }else{
-            throw new SortException(ErrorCode.ILLEGAL_ARGUMENT);
-        }
+        return type;
     }
 
     public String getSortMode() throws SortException, ArrayIndexOutOfBoundsException {
-        String mode = null;
-        try {
-            mode = args[3];
-        }catch (ArrayIndexOutOfBoundsException e){
-            return mode;
+        String mode = argsMap.get("sort-mode");
+        if(mode == null) {
+            return "a";
         }
-        if(mode.startsWith("--sort-mode")) {
-            return mode.replace("--sort-mode=", "");
-        }else{
-            throw new SortException(ErrorCode.ILLEGAL_ARGUMENT);
-        }
+        return mode;
     }
 
-    public String getOption(String arg) throws SortException, ArrayIndexOutOfBoundsException {
-        String opt = null;
-        try {
-            opt = arg;
-        }catch (ArrayIndexOutOfBoundsException e){
-            return opt;
-        }
-        if(opt.startsWith("--sort-mode")) {
-            return opt.replace("--sort-mode=", "");
-        }else{
-            throw new SortException(ErrorCode.ILLEGAL_ARGUMENT);
-        }
+    public Map<String, String> getOptions(){
+        return argsMap;
     }
 }
