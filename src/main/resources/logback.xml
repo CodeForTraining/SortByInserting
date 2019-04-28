@@ -9,9 +9,9 @@
         </encoder>
     </appender>
 
-    <appender name="sorter"
+    <appender name="sorterlog"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>sorterLog.log</File>
+        <File>sorterlog.log</File>
         <Append>true</Append>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%c %d{yyyy.MM.dd HH:mm:ss.SSS} %-5p [%t] %c{1}: %m%n
@@ -28,7 +28,7 @@
         </triggeringPolicy>
     </appender>
 
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="sorterlog"/>
     </root>

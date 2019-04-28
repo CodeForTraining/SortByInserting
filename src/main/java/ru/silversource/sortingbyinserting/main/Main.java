@@ -16,16 +16,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-
-        Sort sort = null;
-        try {
-            GetOpt opt = new GetOpt(args);
-            sort = new Sort(opt.getPath(), opt.getPrefix(), opt.getContentType(), opt.getSortMode());
-        }catch (SortException e){
-            System.out.println(e.getErrorCode().getErrorString());//else help info
-            return;
+        GetOpt opt = new GetOpt();
+        if(opt.setArgs(args)) {
+            Sort sort = new Sort(opt.getPath(), opt.getPrefix(), opt.getContentType(), opt.getSortMode());
+            LOGGER.debug("Start sorting!");
+            sort.goSort();
         }
-        LOGGER.debug("Start sorting!");
-        System.out.println(sort.start());
     }
 }

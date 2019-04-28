@@ -7,12 +7,12 @@ import java.util.List;
 
 public class InsertionSort {
 
-    public static List<String> sortListInt(List<String> array) throws SortException{
+    public static List<String> sortListInt(List<String> array, int ascending) throws SortException{
         for(int j = 0; j < array.size(); j++){
             try {
                 int temp = Integer.parseInt(array.get(j));
                 int i = j - 1;
-                for (; i >= 0 && Integer.parseInt(array.get(i)) > temp; i--) {
+                for (; i >= 0 && Integer.parseInt(array.get(i))*ascending > temp*ascending; i--) {
                     array.set(i + 1, array.get(i));
                 }
                 array.set(i + 1, "" + temp);
@@ -23,11 +23,11 @@ public class InsertionSort {
         return array;
     }
 
-    public static List<String> sortListString(List<String> array){
+    public static List<String> sortListString(List<String> array, int ascending){
         for(int j = 0; j < array.size(); j++){
             String temp = array.get(j);
             int i = j- 1;
-            for(;i >= 0 && array.get(i).compareTo(temp) > 0;i--){
+            for(;i >= 0 && array.get(i).compareTo(temp)*ascending > 0;i--){
                 array.set(i + 1, array.get(i));
             }
             array.set(i + 1, temp);

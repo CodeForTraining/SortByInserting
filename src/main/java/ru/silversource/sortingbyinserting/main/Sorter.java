@@ -13,7 +13,7 @@ public class Sorter extends Thread {
 
     private File file;
     private String prefix;
-    private boolean ascending;
+    private int ascending;
     private String type;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Sorter.class);
@@ -22,7 +22,7 @@ public class Sorter extends Thread {
     public Sorter(File file, String prefix, String ascending, String type) {
         this.file = file;
         this.prefix = prefix;
-        this.ascending = ascending.equals("a")? true : false;
+        this.ascending = ascending.equals("a")? 1 : -1;
         this.type = type;
     }
 
@@ -33,17 +33,16 @@ public class Sorter extends Thread {
     }
 
     private void sort(){
-        LOGGER.debug("Sorting file sort(): {}", file.getPath());
         List<String> list = null;
-        File fileOut = new File("C:/out_dir/" + prefix + file.getName());
+        File fileOut = new File(file.getParent()+ "\\" + prefix + file.getName());
         try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
             list = reader.lines().collect(Collectors.toList());
 
             if(type.equals("s")) {
                 //strings = InsertionSort.sortString(strings);
-                list = InsertionSort.sortListString(list);
+                list = InsertionSort.sortListString(list, ascending);
             }else {
-                list = InsertionSort.sortListInt(list);
+                list = InsertionSort.sortListInt(list, ascending);
             }
 
             LOGGER.debug("Array is string: {}", list);
@@ -66,4 +65,6 @@ public class Sorter extends Thread {
             LOGGER.debug("Can't write file: {}", fileOut.getPath());
         }
     }
+
+
 }

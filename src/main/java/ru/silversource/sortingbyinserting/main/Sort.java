@@ -2,6 +2,7 @@ package ru.silversource.sortingbyinserting.main;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.silversource.sortingbyinserting.exceptions.ErrorCode;
 
 import java.io.File;
 import java.util.Arrays;
@@ -35,17 +36,20 @@ public class Sort {
         return opt;
     }
 
-    public String start() {
+    public void goSort() {
         LOGGER.debug("Start sorting method start()!");
-        File out_folder = new File("C:/out_dir/");
-        out_folder.mkdir();
         File folder = new File(path);
+        File out_folder = new File(folder +"_sort_out");
+        out_folder.mkdir();
+        if(!folder.exists()){
+            LOGGER.info(ErrorCode.PATH_NOT_FOUND.getErrorString());
+            return ;
+        }
         files = Arrays.asList(folder.listFiles());
         for(File file: files){
             Sorter sorter = new Sorter(file, prefix, sortMode, contentType);
             LOGGER.debug("Command start sort: ", file.getPath());
             sorter.start();
         }
-        return "Complete!";
     }
 }
