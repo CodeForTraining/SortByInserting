@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Sort {
+public class SorterFactory {
 
     String path;
     String prefix;
@@ -20,7 +20,7 @@ public class Sort {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Sorter.class);
 
-    public Sort(String path, String prefix, String contentType, String sortMode) {
+    public SorterFactory(String path, String prefix, String contentType, String sortMode) {
         this.path = path;
         this.prefix = prefix;
         this.contentType = contentType;

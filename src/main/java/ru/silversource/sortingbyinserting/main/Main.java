@@ -3,7 +3,6 @@ package ru.silversource.sortingbyinserting.main;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.silversource.sortingbyinserting.exceptions.SortException;
 
 public class Main {
 
@@ -18,9 +17,9 @@ public class Main {
 
         GetOpt opt = new GetOpt();
         if(opt.setArgs(args)) {
-            Sort sort = new Sort(opt.getPath(), opt.getPrefix(), opt.getContentType(), opt.getSortMode());
+            SorterFactory sorterFactory = new SorterFactory(opt.getPath(), opt.getPrefix(), opt.getContentType(), opt.getSortMode());
             LOGGER.debug("Start sorting!");
-            sort.goSort();
+            sorterFactory.goSort();
         }
     }
 }
