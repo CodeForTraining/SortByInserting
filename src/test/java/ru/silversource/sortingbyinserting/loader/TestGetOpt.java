@@ -1,7 +1,4 @@
-package ru.silversource.sortingbyinserting.main;
-
-import org.junit.Test;
-import ru.silversource.sortingbyinserting.exceptions.SortException;
+package ru.silversource.sortingbyinserting.loader;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,4 +1,4 @@
-package ru.silversource.sortingbyinserting.main;
+package ru.silversource.sortingbyinserting.loader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ public class GetOpt {
 
     private Map<String, String> argsMap;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Sorter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GetOpt.class);
 
     public GetOpt() {
 
@@ -114,7 +114,7 @@ public class GetOpt {
 
     private void printHelpArgs() {
         String line;
-        try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/main/resources/readme.txt")))){
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream("/readme.txt")))){
             while((line = reader.readLine()) != null ) {
                 System.out.println(line);
             }

@@ -1,4 +1,4 @@
-package ru.silversource.sortingbyinserting.main;
+package ru.silversource.sortingbyinserting.loader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

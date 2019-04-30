@@ -1,4 +1,4 @@
-package ru.silversource.sortingbyinserting.main;
+package ru.silversource.sortingbyinserting.loader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ public class SorterFactory {
     String sortMode;
     List<File> files;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Sorter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SorterFactory.class);
 
     public SorterFactory(String path, String prefix, String contentType, String sortMode) {
         this.path = path;
@@ -39,8 +39,6 @@ public class SorterFactory {
     public void goSort() {
         LOGGER.debug("Start sorting method start()!");
         File folder = new File(path);
-        File out_folder = new File(folder +"_sort_out");
-        out_folder.mkdir();
         if(!folder.exists()){
             LOGGER.info(ErrorCode.PATH_NOT_FOUND.getErrorString());
             return ;
